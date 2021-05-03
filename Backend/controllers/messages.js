@@ -19,7 +19,7 @@ exports.createPost = (request, response) => {
     const query="INSERT INTO messages SET ?";
 
     var datePost = mysql.raw('now()');
-    const params={user_id:req.user_id, titre:req.titre, contenu:req.contenu, image:req.image, date_post:datePost }
+    const params={user_mess:req.user_mess, titre:req.titre, contenu:req.contenu, image:req.image, date_post:datePost }
     con.query(query,params,(err,result,fields) => {
       if(err) throw err;
     
@@ -33,7 +33,7 @@ exports.createPost = (request, response) => {
 
 exports.getAllPost = (request, response) => {
 
-    con.query('SELECT * FROM messages', (err,rows) => {
+    con.query('SELECT * FROM messages ORDER BY id DESC', (err,rows) => {
       if(err) throw err;
     
       response.json({data:rows});

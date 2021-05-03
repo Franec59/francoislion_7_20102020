@@ -42,7 +42,7 @@ exports.signup = async function (request, response) {
 };//fin de exports
 
 
-//login ( GET one user ) => rajouter l'identification by TOKEN !!!
+//login ( GET one user ) => identification by TOKEN !!!
 //=================================================================
 
 exports.login = (request, response) => {
@@ -89,18 +89,6 @@ exports.getAllUsers = (request, response) => {
       
     })
   };
-
-
-/*
-//test avec then
-exports.getAllUsers = (request, response, next) => {
-
-  con.query('SELECT * FROM users')
-  .then (rows => response.status(200).json({data:rows}))
-  .catch(error => response.status(400).json({ error }))
-       
-};
-*/
 
 
 //PUT update : modifier son compte utilisateur

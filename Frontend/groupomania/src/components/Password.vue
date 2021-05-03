@@ -3,7 +3,7 @@
 <div class="form-group mt-3">
 
   <label for="password" class="form-label">Mot de passe
-  <input v-bind:type="inputType" id="password" class="form-control" placeholder="Mot de passe" aria-describedby="passwordHelpBlock" required pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,20}">
+  <input v-bind:type="inputType" id="password" class="form-control" placeholder="Mot de passe" aria-describedby="passwordHelpBlock" required pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,20}" v-model="password">
   
   <div class="password-icon">
     <svg xmlns="http://www.w3.org/2000/svg" v-if="seen" v-on:click="lookPassword()" width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
@@ -33,7 +33,8 @@
       return{
         seen: true,
         seenoff:false,
-        inputType: "password"
+        inputType: "password",
+        
         
       }
     },
@@ -48,8 +49,11 @@
         this.seen = true,
         this.seenoff = false,
         this.inputType = "password"
-      }
-    }//fin de methods
+      },
+      
+    },//fin de methods
+
+    
     
 }//fin de export default
 

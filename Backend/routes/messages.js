@@ -7,7 +7,7 @@ const messageCtrl = require('../controllers/messages');
 
 
 router.post("/", messageCtrl.createPost);
-router.get("/", auth, messageCtrl.getAllPost);
+router.get("/", messageCtrl.getAllPost);
 router.get("/mypost", messageCtrl.getOnePost);
 router.put("/", messageCtrl.updatePost);
 router.delete("/", messageCtrl.deletePost);

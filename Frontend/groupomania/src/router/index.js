@@ -29,7 +29,13 @@ const routes = [
     path: '/profil',
     name: 'Profil',
     component: () => import('../views/Profil.vue')
-  }
+  },
+  {
+    path: '/publier',
+    name: 'Publier',
+    component: () => import('../views/Publier.vue')
+  },
+
 ]
 
 const router = createRouter({
