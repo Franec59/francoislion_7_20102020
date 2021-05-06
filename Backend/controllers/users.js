@@ -42,40 +42,41 @@ exports.signup = async function (request, response) {
 };//fin de exports
 
 
-//login ( GET one user ) => identification by TOKEN !!!
+//login ( GET one user ) avec body
 //=================================================================
 
 exports.login = (request, response) => {
     
-    const req=request.query
-    
-    con.query("SELECT * FROM users WHERE email =? && username =?", [req.email, req.username], function(error, results, fields) {
-    if(error) throw error;
-    else { 
-        if(results.length > 0) { 
-        bcrypt.compare(req.password, results[0].password, function(err, result) {
-         if(result) {
-          response.status(200).json({
-            id: req.id,
-            token: jwt.sign(
-              { id: req.id },
-              'RANDOM_TOKEN_SECRET',
-              { expiresIn: '24h'},
-            ),
-            message: "Login Successful"
-          })//fin de reponse.status
+  const req=request.body
+  
+  con.query("SELECT * FROM users WHERE email =? && username =?", [req.email, req.username], function(error, rows ) {
+  if(error) throw error;
+  else { 
+    if(rows.length > 0) { 
+      bcrypt.compare(req.password, rows[0].password, function(err, row) {
+       if(row) {
+        response.status(200).json({
+          data:rows,
+          token: jwt.sign(
+            { id:  req.id },
+            'RANDOM_TOKEN_SECRET',
+            { expiresIn: '24h'},
+          ),
+          message: "Login Successful"
+        })//fin de reponse.status
 
-         }
-         else {
-           return response.status(400).send({ message: "Invalid Password" });
-         }
-        });
-    } else {
-        return response.status(400).send({ message: "Invalid Pseudo or Email" });
-    } 
-    }
-  });
+       }
+       else {
+         return response.status(400).send({ message: "Invalid Password" });
+       }
+      });
+  } else {
+      return response.status(400).send({ message: "Invalid Pseudo or Email" });
+  } 
+  }
+});
 };
+
 
 //GET : tous les users
 //==================================================
@@ -137,13 +138,9 @@ exports.requeteUser = (request, response) => {
 
 
 
-
-
-
-/*
-//login sauvegarde du code
+//login sauvegarde du code avec params
 //=================================================================
-
+/*
 exports.login = (request, response) => {
     
   const req=request.query
@@ -155,6 +152,83 @@ exports.login = (request, response) => {
       bcrypt.compare(req.password, results[0].password, function(err, result) {
        if(result) {
          return response.send({ message: "Login Successful" });
+       }
+       else {
+         return response.status(400).send({ message: "Invalid Password" });
+       }
+      });
+  } else {
+      return response.status(400).send({ message: "Invalid Pseudo or Email" });
+  } 
+  }
+});
+};
+*/
+
+
+//login ( GET one user ) => sauvegarde Vincent
+//=================================================================
+/*
+exports.login = (request, response) => {
+    
+  const req=request.body
+  console.log(request.body);
+  
+  con.query("SELECT * FROM users WHERE email =? && username =?", [req["username"], req["email"]], function(error, rows) {   
+   
+     
+  if(error) throw error;
+  else { 
+      if(rows.length > 0) { 
+      bcrypt.compare(req["password"], rows[0].password, function(err, row) {
+       if(row) {
+        response.status(200).json({
+          data : rows,
+          token: jwt.sign(
+            { id:  req["id"] },
+            'RANDOM_TOKEN_SECRET',
+            { expiresIn: '24h'},
+          ),
+          message: "Login Successful"
+        })//fin de reponse.status
+
+       }
+       else {
+         return response.status(400).send({ message: "Invalid Password" });
+       }
+      });
+  } else {
+      return response.status(400).send({ message: "Invalid Pseudo or Email" });
+  } 
+  }
+});
+};
+*/
+
+//login sauvegarde original
+//=================================================================
+/*
+exports.login = (request, response) => {
+    
+  const req=request.query
+  
+  con.query("SELECT * FROM users WHERE email =? && username =?", [req.email, req.username], function(error, results, fields) {
+  if(error) throw error;
+  else { 
+    if(results.length > 0) { 
+      bcrypt.compare(req.password, results[0].password, function(err, result) {
+       if(result) {
+        response.status(200).json({
+          id: req.id,
+          username:  req.username,
+          token: jwt.sign(
+            { id:  req.id },
+            'RANDOM_TOKEN_SECRET',
+            { expiresIn: '24h'},
+          ),
+          message: "Login Successful"
+        })//fin de reponse.status
+
        }
        else {
          return response.status(400).send({ message: "Invalid Password" });

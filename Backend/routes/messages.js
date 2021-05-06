@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 
 const auth = require('../middleware/auth');
+const multer = require('../middleware/multer-config');
 
 const messageCtrl = require('../controllers/messages');
 
 
-router.post("/", messageCtrl.createPost);
+router.post("/", multer, messageCtrl.createPost);
 router.get("/", messageCtrl.getAllPost);
 router.get("/mypost", messageCtrl.getOnePost);
 router.put("/", messageCtrl.updatePost);

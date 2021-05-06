@@ -2,25 +2,21 @@
 
   <div class="about">
     <br>
-    <h1>test axios</h1>
+    <h1>test axios requete login</h1>
     <br>
-    <p>{{ posts }}</p>
-  <br>
-  <div v-for="data in posts" :key="data">
-            <h3>{{ data.comments }}</h3>
-        </div>
-  
-  <div class=" pseudo mt-3">
-    <label for="pseudo" class="form-label">Votre pseudo</label>
-    <input type="text" class="form-control" id="pseudo" name="pseudo" placeholder="Votre pseudo" required pattern="[a-zA-Z0-9éèîïÎÏéèêçàîïë]{3,30}" v-model="username">
+
+    <form action="">
+      <input type="text" v-model="userLogin">
+      <input type="email" v-model="mailLogin">
+      <input type="password" v-model="passLogin">
+      <input type="submit" v-on:click="loginSend()">envoyer
+    </form>
     
-  </div>
-  <button type="button" class="btn btn-primary" v-on:click="test()">Primary</button>
-  <p>{{ username }}</p>
 
-  <h1>{{ toto }}</h1>
-  <h1>test : {{ testbt }}</h1>
-
+    <p class="mt-3">test :{{ responseLog }}</p>
+        <br>
+        <h3>{{ loginMess }}</h3>
+    
 </div>
 
 </template>
@@ -33,35 +29,41 @@ export default {
     name: 'About',
     data(){
       return{
-        posts: null,
-        username: " ",
-        toto: "toto",
-        testbt: ""    
+        userLogin : "",
+        mailLogin : "",
+        passLogin : "",
+        responseLog :"",
+        loginMess : ""
       }
     },
-    
-    mounted () {
-    axios
-      .get('http://localhost:3000/API/comments')
-      .then(response => (this.posts = response.data.data))
-      .catch(error => console.log(error))
-  },
   
   methods : {
-    test() {
-      this.toto = this.username,
-      this.testbt = "test ok !"
+    // POST login request
+      loginSend: function () {
+        const user = {
+          username : this.userLogin,
+          email : this.mailLogin,
+          password : this.passLogin
+        }
+        axios.post('http://localhost:3000/users/login', user)
+            .then(response => {
+              console.log(response.data),
+              this.responseLog = response.data,
+              this.loginMess = "vous etes connecté !"
 
-    },
-    //test localstorage
-    saveCats() {
-      //const parsed = JSON.stringify("testcat");
-      localStorage.setItem('cats', "test");
-    }
+              })
+            .catch(error => {
+               console.log(error)
+        })//fin de axios
+      },//fin de sendLogin
+
+
+
   },//fin de methods
   
     
 }//fin de export default
+
 /*
 LOG_USER: function (state, user) {
       instance.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;

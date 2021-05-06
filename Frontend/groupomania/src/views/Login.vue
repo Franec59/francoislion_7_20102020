@@ -40,18 +40,15 @@
         </label>
       </div>
        
-        <input class="btn btn-light btn-outline-success mt-3 mb-3" type="submit" value="Se connecter" v-on:click="sendLogin()">
+        <input class="btn btn-light btn-outline-success mt-3 mb-3" type="submit" value="Se connecter" v-on:click.prevent="sendLogin()">
         
         </form>
       </div><!--fin de la div formulaire-->
 
-        <p class="mt-5">{{ userTest }}</p>
+        <!--<p class="mt-5">{{ userTest }}</p>-->
         <p class="mt-3">test :{{ userLogin }}</p>
         <br>
-        <div v-for="data in userLogin" :key="data">
-            <h3>{{ data.username }}</h3>
-        </div>
-        
+        <h3>{{ login }}</h3>
 
       <div class="col-2 col-lg-4"></div>
     </div><!--fin de row-->
@@ -73,8 +70,9 @@ export default {
         userLog: "",
         mailLog: "",
         passLog: "",
-        userLogin: null,
-        userTest: null
+        userLogin: "",
+        //userTest: null,
+        login : ""
       }
     
   },
@@ -90,26 +88,40 @@ export default {
         this.inputType = "password"
       },
       
-      // GET login request
-      sendLogin() {    
-        axios.get('http://localhost:3000/users/login', { params : {
+      // POST login request
+      sendLogin: function () {
+        const user = {
           username : this.userLog,
           email : this.mailLog,
           password : this.passLog
-          }})
+        }
+        axios.post('http://localhost:3000/users/login', user)
             .then(response => {
-              console.log(response),
-              this.userLogin = response.data
+              console.log(response.data)
+      
+              this.userLogin = response.data.data
+              this.login = "vous etes connecté !"
               
-              //const userName = JSON.stringify(response.data.data.username);
-              //localStorage.setItem('username', userName);       
+              const tokenRep = response.data.token;
+              const token = JSON.stringify(tokenRep);
+              localStorage.setItem('user-token', token); // store the token in localstorage
+              const usernameResp = response.data.data;
+              const userId = JSON.stringify(usernameResp);
+              localStorage.setItem('user-name', userId );
+
+
               })
-            .catch(error => { console.log(error)
+            .catch(error => {
+               console.log(error)
+               localStorage.removeItem('user-token') // if the request fails, remove any possible user token if possible
+               localStorage.removeItem('user-name')
+
         })//fin de axios
       },//fin de sendLogin
       
   },//fin de methods
   
+  /*
   mounted () {
     // GET test users  
         axios.get('http://localhost:3000/users')
@@ -121,7 +133,24 @@ export default {
         })//fin de axios
 
   }//fin de mounted
-  
+*/
+
+// sauvegarde GET login request
+ /*     sendLogin() {    
+        axios.post('http://localhost:3000/users/login', { params : {
+          username : this.userLog,
+          email : this.mailLog,
+          password : this.passLog
+          }})
+            .then(response => {
+              console.log(response),
+              this.userLogin = response.data  
+              })
+            .catch(error => {
+               console.log(error)
+        })//fin de axios
+      },//fin de sendLogin
+*/
 
 }//fin de export default
 </script>

@@ -19,7 +19,14 @@ exports.createPost = (request, response) => {
     const query="INSERT INTO messages SET ?";
 
     var datePost = mysql.raw('now()');
-    const params={user_mess:req.user_mess, titre:req.titre, contenu:req.contenu, image:req.image, date_post:datePost }
+    if (typeof req.image === "undefined") {
+      imageUrl = null;
+    } else {
+      imageUrl = `${request.protocol}://${request.get('host')}/images/${request.file.filename}`;
+    }
+    
+    //const imageUrl = `${request.protocol}://${request.get('host')}/images/${request.file.filename}`;
+    const params={user_mess:req.user_mess, titre:req.titre, contenu:req.contenu, image:imageUrl, date_post:datePost }
     con.query(query,params,(err,result,fields) => {
       if(err) throw err;
     

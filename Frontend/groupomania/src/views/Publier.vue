@@ -16,17 +16,16 @@
                         <textarea class="form-control" id="Textarea1" v-model="textP" rows="3" placeholder="Saississez votre texte ici"></textarea>
                     </div>
                     <div class="photo mt-3">
-                        <!--<label for="photo" class="form-label text-dark">Sélectionner une image</label>-->
+                        <!--<label for="picture" class="form-label text-dark">Sélectionner une image</label>-->
                         <p class="text-info text-dark">Sélectionner une image</p>
-                        <input type="file" class="form-control" id="photo" name="photo" accept=".png, .jpg, .jpeg">
+                        <input type="file" @change="onSelect" class="form-control" id="picture" name="picture" accept=".png, .jpg, .jpeg">
                     </div>
-                    
                     
                     <button type="submit" class="btn btn-success mt-5 mb-3 btn-select" v-on:click="publier()">Publier</button>
                 </form>
 
-
             </div><!--fin de col 8-->
+
             <div class="col-2 col-lg-4"></div>
 
         </div><!--fin de row-->
@@ -42,18 +41,32 @@ export default {
     data() {
         return{
             titleP:"",
-            textP:""
+            textP:null,
+            file: ""
         }
     },//fin de data
 methods : {
+
+    onSelect(event){
+        this.file = event.target.files[0];
+        console.log(event);
+    },
     // POST Send message
-      publier () {       
-        axios.post('http://localhost:3000/message', null, { params : {
-          user_mess : "Batman",
-          titre : this.titleP,
-          contenu : this.textP,
-          image: null
-          }})
+      publier () {
+
+        // Création d'un formData obligatoire pour envoi de l'image
+        const formData = new FormData()
+        formData.append('image' ,this.file );
+        
+        axios.post('http://localhost:3000/message', formData, {params:{
+            user_mess : "toto",
+            titre : this.titleP,
+            contenu : this.textP,
+        }},
+          {headers:{
+              'content-type': 'multipart/form-data'
+          }}
+          )
             .then(function (response) {
               console.log(response);
           })
@@ -65,9 +78,22 @@ methods : {
 
 
 },//fin de methods
-
-    
+ 
 }
+/*
+axios.post('http://localhost:3000/message', null, { params : {
+          user_mess : "toto",
+          titre : this.titleP,
+          contenu : this.textP,
+          image : this.file
+          }})
+            .then(function (response) {
+              console.log(response);
+          })
+            .catch(function (error) {
+              console.log(error);
+        });//fin de axios 
+*/
 </script>
 
 <style scoped>
