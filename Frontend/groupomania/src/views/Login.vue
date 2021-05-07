@@ -1,12 +1,17 @@
 <template>
     <div class="container signup pt-3">
-        <h1>Se connecter</h1>
+        <h1 class="mb-5 mt-3">Bienvenue sur votre réseau 
+          <img src="../assets/logorouge.png" alt="logo groupomania rouge" class="logo-groupo-red">
+        </h1>
         
     <div class="row">
       <div class="col-2 col-lg-4"></div>
 
       <div class="col-8 col-lg-4 mt-3 contact"> 
-
+          <h3 class="text-light mt-3">Se connecter</h3>
+          
+            <h6>Sinon créer votre compte ici : <router-link to="/signup" class="signlink">S'inscrire</router-link></h6>
+            
         <form class="mt-3" id="form" @submit="checkForm">
             
         <!--<Pseudo />-->
@@ -88,6 +93,7 @@ export default {
         this.inputType = "password"
       },
       
+      
       // POST login request
       sendLogin: function () {
         const user = {
@@ -107,50 +113,23 @@ export default {
               localStorage.setItem('user-token', token); // store the token in localstorage
               const usernameResp = response.data.data;
               const userId = JSON.stringify(usernameResp);
-              localStorage.setItem('user-name', userId );
-
+              localStorage.setItem('current-user', userId );
+              
+              this.$router.push('/Forum') 
 
               })
             .catch(error => {
                console.log(error)
                localStorage.removeItem('user-token') // if the request fails, remove any possible user token if possible
-               localStorage.removeItem('user-name')
+               localStorage.removeItem('current-user')
 
         })//fin de axios
       },//fin de sendLogin
       
+      
   },//fin de methods
   
-  /*
-  mounted () {
-    // GET test users  
-        axios.get('http://localhost:3000/users')
-            .then(response => {
-              console.log(response),
-              this.userTest = response.data.data         
-              })
-            .catch(error => { console.log(error)
-        })//fin de axios
-
-  }//fin de mounted
-*/
-
-// sauvegarde GET login request
- /*     sendLogin() {    
-        axios.post('http://localhost:3000/users/login', { params : {
-          username : this.userLog,
-          email : this.mailLog,
-          password : this.passLog
-          }})
-            .then(response => {
-              console.log(response),
-              this.userLogin = response.data  
-              })
-            .catch(error => {
-               console.log(error)
-        })//fin de axios
-      },//fin de sendLogin
-*/
+  
 
 }//fin de export default
 </script>
@@ -210,6 +189,18 @@ input{
   background-repeat: no-repeat, repeat; /* Do not repeat the image */
   background-size: cover;
 
+}
+
+.signlink{
+   text-decoration: underline;
+}
+
+h1{
+  color:rgb(75, 75, 224);
+}
+
+.logo-groupo-red{
+  width: 30%;
 }
 
 </style>

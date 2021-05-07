@@ -21,7 +21,7 @@
                         <input type="file" @change="onSelect" class="form-control" id="picture" name="picture" accept=".png, .jpg, .jpeg">
                     </div>
                     
-                    <button type="submit" class="btn btn-success mt-5 mb-3 btn-select" v-on:click="publier()">Publier</button>
+                    <button type="submit" class="btn btn-success mt-5 mb-3 btn-select" v-on:click.prevent="publier()">Publier</button>
                 </form>
 
             </div><!--fin de col 8-->
@@ -57,14 +57,29 @@ methods : {
         // Création d'un formData obligatoire pour envoi de l'image
         const formData = new FormData()
         formData.append('image' ,this.file );
+
+        //récupération du token
+        const token = JSON.parse(localStorage.getItem('user-token'))
+        if (token) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        } else {
+         axios.defaults.headers.common['Authorization'] = null;
+        }
+
+        //récupération du nom de l'auteur du message
+        const currentUser = localStorage.getItem('current-user');
+        const currentUser2 = JSON.parse(currentUser);
+        const currentUser3 = currentUser2[0].username
         
         axios.post('http://localhost:3000/message', formData, {params:{
-            user_mess : "toto",
+            user_mess : currentUser3,
             titre : this.titleP,
             contenu : this.textP,
         }},
           {headers:{
-              'content-type': 'multipart/form-data'
+              'content-type': 'multipart/form-data',
+              'Authorization': `Bearer ${token}`
+              
           }}
           )
             .then(function (response) {
@@ -75,7 +90,22 @@ methods : {
         });//fin de axios 
     }//fin de createUser
 
+/*
+const token = localStorage.getItem('user-token')
+if (token) {
+  axios.defaults.headers.common['Authorization'] = token
+}
 
+const token = '..your token..'
+
+axios.post(url, {
+  //...data
+}, {
+  headers: {
+    'Authorization': `Basic ${token}` 
+  }
+})
+*/
 
 },//fin de methods
  

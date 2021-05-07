@@ -105,6 +105,52 @@ const myLoginRoutine = user => new Promise ((resolve, reject) => {
 })
 */
 
+/*
+  mounted () {
+    // GET test users  
+        axios.get('http://localhost:3000/users')
+            .then(response => {
+              console.log(response),
+              this.userTest = response.data.data         
+              })
+            .catch(error => { console.log(error)
+        })//fin de axios
+
+  }//fin de mounted
+*/
+
+// sauvegarde GET login request
+ /*     sendLogin() {    
+        axios.post('http://localhost:3000/users/login', { params : {
+          username : this.userLog,
+          email : this.mailLog,
+          password : this.passLog
+          }})
+            .then(response => {
+              console.log(response),
+              this.userLogin = response.data  
+              })
+            .catch(error => {
+               console.log(error)
+        })//fin de axios
+      },//fin de sendLogin
+*/
+/*
+const token = localStorage.getItem('user-token')
+if (token) {
+  axios.defaults.headers.common['Authorization'] = token
+}
+
+const token = '..your token..'
+
+axios.post(url, {
+  //...data
+}, {
+  headers: {
+    'Authorization': `Basic ${token}` 
+  }
+})
+*/
 </script>
 
 

@@ -1,13 +1,11 @@
 <template>
     
   <div class="container signup pt-3">
-        <h1>Créer votre compte</h1>
-        
     <div class="row">
       <div class="col-2 col-lg-4"></div>
 
       <div class="col-8 col-lg-4 mt-3 contact"> 
-
+        <h3 class="text-light mt-3">Créer votre compte</h3>
         <form class="mt-3"
             id="form"
             @submit="checkForm"  
@@ -58,7 +56,7 @@
           </div>
         </div>
        
-        <input class="btn btn-light btn-outline-success mt-3 mb-3" type="submit" value="Créer votre compte" v-on:click="createUser()">
+        <input class="btn btn-light btn-outline-success mt-3 mb-3" type="submit" value="Créer votre compte" v-on:click.prevent="createUser()">
         
         </form>
 
@@ -112,10 +110,11 @@ export default {
           email : this.email,
           password : this.password
           }})
-            .then(function (response) {
-              console.log(response);
+            .then(response => {
+              console.log(response)
+              this.$router.push('/'); 
           })
-            .catch(function (error) {
+            .catch(error => {
               console.log(error);
         });//fin de axios 
     }//fin de createUser

@@ -7,7 +7,7 @@ const multer = require('../middleware/multer-config');
 const messageCtrl = require('../controllers/messages');
 
 
-router.post("/", multer, messageCtrl.createPost);
+router.post("/", auth, multer, messageCtrl.createPost);
 router.get("/", messageCtrl.getAllPost);
 router.get("/mypost", messageCtrl.getOnePost);
 router.put("/", messageCtrl.updatePost);

@@ -66,7 +66,7 @@
 import axios from 'axios';
 
 export default {
-    name: 'Home',
+    name: 'Forum',
     data(){
       return{
         messages: null,
