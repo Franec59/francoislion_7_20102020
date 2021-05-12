@@ -30,7 +30,7 @@ app.use (express.json ());
 //==========================================================
 app.use('/users', userRoutes);
 app.use('/message', messageRoutes);
-app.use('/API/comments', commentsRoutes);
+app.use('/comments', commentsRoutes);
 app.use('/likes', likesRoutes);
 
 //config multer

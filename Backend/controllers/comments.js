@@ -15,11 +15,10 @@ const con = mysql.createConnection({
 //POST commenter un message
 //======================================================
 exports.createComments = (request, response) => {
-    const req=request.query
-    const query="INSERT INTO comments SET ?";
+    const req=request.body
+    var datePost = mysql.raw('now()');
 
-    const params={user_id:req.user_id, message_id:req.message_id, comments:req.comments }
-    con.query(query,params,(err,result,fields) => {
+    con.query("INSERT INTO Comments ( user_name, message_id, comment, date_comment ) VALUE (?, ?, ?, ?)", [req.user_name, req.message_id, req.comment, date_comment=datePost], (err,result,fields) => {
       if(err) throw err;
     
       response.json({message:"Commentaires ajoutés !"})
@@ -73,6 +72,21 @@ exports.deleteComments = (request, response) => {
 
 exports.getOneComments = (request, response) => {
   const req=request.query
+  con.query('SELECT * FROM comments where message_id=?',[req.message_id], (err,rows) => {
+    if(err) throw err;
+  
+    response.json({data:rows})
+  
+  })//fin de query
+};//fin de exports
+
+
+/*
+//GET get one message sauvegarde
+//=================================================================
+
+exports.getOneComments = (request, response) => {
+  const req=request.query
   con.query('SELECT * FROM comments where id=?',[req.id], (err,rows) => {
     if(err) throw err;
   
@@ -80,3 +94,4 @@ exports.getOneComments = (request, response) => {
   
   })//fin de query
 };//fin de exports
+*/

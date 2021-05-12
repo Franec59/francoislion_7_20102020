@@ -10,7 +10,7 @@
       <div class="col-8 col-lg-4 mt-3 contact"> 
           <h3 class="text-light mt-3">Se connecter</h3>
           
-            <h6>Sinon créer votre compte ici : <router-link to="/signup" class="signlink">S'inscrire</router-link></h6>
+            <h6>Sinon créez votre compte ici : <router-link to="/signup" class="signlink">S'inscrire</router-link></h6>
             
         <form class="mt-3" id="form" @submit="checkForm">
             
@@ -50,8 +50,7 @@
         </form>
       </div><!--fin de la div formulaire-->
 
-        <!--<p class="mt-5">{{ userTest }}</p>-->
-        <p class="mt-3">test :{{ userLogin }}</p>
+        <!--<p class="mt-3">test :{{ userLogin }}</p>-->
         <br>
         <h3>{{ login }}</h3>
 
@@ -75,8 +74,7 @@ export default {
         userLog: "",
         mailLog: "",
         passLog: "",
-        userLogin: "",
-        //userTest: null,
+        //userLogin: "",
         login : ""
       }
     
@@ -103,9 +101,8 @@ export default {
         }
         axios.post('http://localhost:3000/users/login', user)
             .then(response => {
-              console.log(response.data)
+              //console.log(response.data)
       
-              this.userLogin = response.data.data
               this.login = "vous etes connecté !"
               
               const tokenRep = response.data.token;

@@ -86,11 +86,9 @@ exports.getAllUsers = (request, response) => {
     con.query('SELECT * FROM users', (err,rows) => {
       if(err) throw err;
     
-      response.json({data:rows});
-      
+      response.json({data:rows});  
     })
   };
-
 
 //PUT update : modifier son compte utilisateur
 //=================================================
@@ -106,13 +104,13 @@ exports.updateUser= (request, response) => {
   })
 };
 
-
+/*
 //DELETE : supprimer son compte
 //========================================================
 exports.deleteUser = (request, response) => {
   const req=request.query
-  const query="DELETE FROM users where id = ? ";
-  const params=[req.id]
+  const query="DELETE FROM users WHERE email =? && username =?";
+  const params=[req.email, req.username]
   con.query(query,params,(err,result,fields) => {
     if(err) throw err;
   
@@ -120,6 +118,33 @@ exports.deleteUser = (request, response) => {
   
   })
 };
+*/
+
+//delete user avec body
+//=================================================================
+
+exports.deleteUser = (request, response) => {
+    
+  const req=request.body
+  
+  con.query("DELETE FROM users WHERE email =? && username =?", [req.email, req.username], function(error, rows ) {
+  if(error) throw error;
+  else { 
+    if(rows.length > 0) { 
+      bcrypt.compare(req.password, rows[0].password, function(err, row) {
+       if(row) {
+        response.json({deleted:result.affectedRows}) 
+    } else {
+      return response.status(400).send({ message: "Invalid Password" });
+    }});
+  } else {
+    return response.status(400).send({ message: "Invalid Pseudo or Email" });
+  } 
+  }
+  });
+};
+
+
 
 //test requete tous les messages d'un user
 //=================================================================

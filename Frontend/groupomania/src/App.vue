@@ -51,13 +51,13 @@
         </router-link>        
         <router-link to="/profil">
           <a class="nav-link active" href="#">Voir le profil</a>
-        </router-link>        
+        </router-link>      
         <router-link to="/">
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-power text-light mt-2" viewBox="0 0 16 16">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-power text-light mt-2" viewBox="0 0 16 16" v-on:click.prevent="logOut()">
             <path d="M7.5 1v7h1V1h-1z"/>
             <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812z"/>
             </svg>
-        </router-link>        
+        </router-link>       
       </div>
     </div>
 
@@ -81,6 +81,7 @@ export default {
   },// fin de data
   methods: {
     /*
+    //pour faire apparaitre ou disparaitre le lien publier dans la nav bar
     publishOn : function () {
       const toto = "bob"
       if(toto == "bob"){
@@ -89,8 +90,14 @@ export default {
       //const userOn = localStorage.getItem('current-user');
     }
 */
-
-  }//fin de methods
+  logOut: function () {
+      localStorage.removeItem('current-user');
+      localStorage.removeItem('user-token');
+      this.$router.push('/'); 
+    }
+  },//fin de methods
+  
+  
 }//fin de export default
 </script>
 
