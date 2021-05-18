@@ -10,8 +10,8 @@ const messageCtrl = require('../controllers/messages');
 router.post("/", auth, multer, messageCtrl.createPost);
 router.get("/", messageCtrl.getAllPost);
 router.get("/mypost", messageCtrl.getOnePost);
-router.put("/", messageCtrl.updatePost);
-router.delete("/", messageCtrl.deletePost);
+router.put("/", auth, messageCtrl.updatePost);
+router.delete("/", auth, messageCtrl.deletePost);
 
 //test de requete
 router.get("/requete", messageCtrl.requetePost);

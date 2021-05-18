@@ -24,6 +24,8 @@ app.use((req, res, next) => {
 //2ème middleware bodyparser
 //=============================
 app.use (express.json ());
+// parse application/x-www-form-urlencoded
+//app.use (bodyParser.urlencoded({extended: false}))
 
 
 //routes

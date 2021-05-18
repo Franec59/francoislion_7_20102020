@@ -91,7 +91,6 @@ export default {
         this.inputType = "password"
       },
       
-      
       // POST login request
       sendLogin: function () {
         const user = {

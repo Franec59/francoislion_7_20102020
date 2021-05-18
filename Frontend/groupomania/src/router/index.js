@@ -23,7 +23,7 @@ const routes = [
   },
   {
     path: '/Forum',
-    name: 'LoginForum',
+    name: 'Forum',
     component: () => import('../views/Forum.vue')
   },
   {

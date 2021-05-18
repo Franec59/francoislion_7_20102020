@@ -13,6 +13,10 @@ const con = mysql.createConnection({
   
   });
 
+  con.connect(function(err) {
+    if (err) throw err
+    console.log('Connecté à la BDD mySQL !')
+  })
 
 //signup + bcrypt
 //===========================================
@@ -40,7 +44,6 @@ exports.signup = async function (request, response) {
   
   })//fin de con.query
 };//fin de exports
-
 
 //login ( GET one user ) avec body
 //=================================================================
@@ -76,34 +79,6 @@ exports.login = (request, response) => {
   }
 });
 };
-
-
-//GET : tous les users
-//==================================================
-
-exports.getAllUsers = (request, response) => {
-
-    con.query('SELECT * FROM users', (err,rows) => {
-      if(err) throw err;
-    
-      response.json({data:rows});  
-    })
-  };
-
-//PUT update : modifier son compte utilisateur
-//=================================================
-exports.updateUser= (request, response) => {
-  const req=request.query
-  const query="UPDATE users SET email=?, username=?, password=? where id =?";
-  const params=[req.email, req.username, req.password, req.id]
-  con.query(query,params,(err,result,fields) => {
-    if(err) throw err;
-  
-    response.json({updated:result.affectedRows})
-  
-  })
-};
-
 /*
 //DELETE : supprimer son compte
 //========================================================
@@ -120,6 +95,23 @@ exports.deleteUser = (request, response) => {
 };
 */
 
+//DELETE : supprimer son compte avec body
+//========================================================
+exports.deleteUser = (req, res) => {
+  
+  console.log(req.body)
+  con.query("DELETE FROM users WHERE username =?", [req.body.username], function (error, results ) {
+    if(error) throw error;
+  
+    //res.end('Profil supprimé !');
+    res.json({deleted:results.affectedRows}) 
+  
+  })
+};
+
+
+
+/*
 //delete user avec body
 //=================================================================
 
@@ -127,7 +119,7 @@ exports.deleteUser = (request, response) => {
     
   const req=request.body
   
-  con.query("DELETE FROM users WHERE email =? && username =?", [req.email, req.username], function(error, rows ) {
+  con.query("DELETE FROM users WHERE email =? && username =? && password =?", [req.email, req.username, req.password], function(error, rows ) {
   if(error) throw error;
   else { 
     if(rows.length > 0) { 
@@ -143,7 +135,34 @@ exports.deleteUser = (request, response) => {
   }
   });
 };
+*/
 
+
+//GET : tous les users
+//==================================================
+
+exports.getAllUsers = (request, response) => {
+
+  con.query('SELECT * FROM users', (err,rows) => {
+    if(err) throw err;
+  
+    response.json({data:rows});  
+  })
+};
+
+//PUT update : modifier son compte utilisateur
+//=================================================
+exports.updateUser= (request, response) => {
+const req=request.query
+const query="UPDATE users SET email=?, username=?, password=? where id =?";
+const params=[req.email, req.username, req.password, req.id]
+con.query(query,params,(err,result,fields) => {
+  if(err) throw err;
+
+  response.json({updated:result.affectedRows})
+
+})
+};
 
 
 //test requete tous les messages d'un user

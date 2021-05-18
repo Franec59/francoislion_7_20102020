@@ -2,7 +2,7 @@
   <div class="container home pt-3">
     <img src="../assets/logorouge.png" alt="logo groupomania rouge" class="logo-groupo-red">
     <br>
-      <h2>Bonjour<h2 class="pseudo">"{{ pseudo }}"</h2>bienvenue sur le forum !</h2>
+      <h2>Bonjour<h2 class="pseudo">" {{ pseudo }} "</h2>bienvenue sur le forum !</h2>
     <br>
     <div>
       <!--<p>{{ messages }}</p>-->
@@ -48,20 +48,20 @@
                 <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
               </svg>
 
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-trash ico-post" viewBox="0 0 16 16" v-on:click.prevent="delPost()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-trash ico-post" viewBox="0 0 16 16" v-on:click.prevent="deletePost(message.id, message.username)">
                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                 <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-              </svg>
+              </svg>{{ message.id }}
             </div><!--fin de footer-->
             <div v-if="commentsoff">
             <Comment v-bind:messageId="message.id" />
           </div>
           
-          <div class="container mt-5" v-if="showTheComments">
-            <div class="row">
-              <div class="col-12 comments mb-3" v-for="comment in message.comments" :key="comment">
-                <p class="card-text"><small class="text-primary"><span class="text-success">{{ comment.username }}</span> a ajouté le commentaire suivant, le <span class="text-success">{{ comment.date }}</span></small></p>
-                <p class="card-text text-left">{{ comment.comment }}</p>          
+          <div class="container" v-for="comment in message.comments" :key="comment">
+            <div class="row" v-if="comment.id != null">
+              <div class="col-12 comments mt-2 mb-2">
+                <p class="card-text text-id"><small class="text-primary"><span class="text-success">{{ comment.username }}</span> a ajouté le commentaire suivant, le <span class="text-success">{{ comment.date }}</span></small></p>
+                <p class="card-text text-comment">{{ comment.comment }}</p>          
               </div>
             </div>
           </div>
@@ -88,7 +88,7 @@ export default {
     components: {
       Comment
     },
-    //props: ['messageId'],
+    
     data(){
         
       return{
@@ -96,10 +96,9 @@ export default {
         off: false,
         imgoff: false,
         commentsoff : false,
-        //messageId : 19,
         pseudo : "",
-        showTheComments : true
-        
+        showTheComments : true,
+      
       }
     },   
     mounted () {
@@ -122,9 +121,6 @@ export default {
             this.pseudo = currentUser3
           }
       }
-      if(this.messages.comments == null){
-        this.showTheComments = true
-      }
   },
   methods :{
     
@@ -136,6 +132,59 @@ export default {
         this.commentsoff = false
     }
   },//fin de postComment
+
+  deletePost:function(id, username) {
+
+    //récupération du token
+    const token = JSON.parse(localStorage.getItem('user-token'))
+      if (token) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      } else {
+        axios.defaults.headers.common['Authorization'] = null;
+      }
+
+    const currentAdmin = localStorage.getItem('current-user');
+    const currentAdmin2 = JSON.parse(currentAdmin);
+    const currentAdmin3 = currentAdmin2[0].isAdmin
+
+    const currentUser = localStorage.getItem('current-user');
+    const currentUser2 = JSON.parse(currentUser);
+    const currentUser3 = currentUser2[0].username
+    
+    if (currentAdmin3 == 0 && currentUser3 == username ){
+      
+        axios.delete('http://localhost:3000/message', {
+          params : { id : id},
+          headers:{
+              'Authorization': `Bearer ${token}`
+              
+          }})
+            .then(response => {
+              console.log(response)
+              location.reload();
+              })
+            .catch(error => {
+               console.log(error)      
+        })//fin de axios
+
+    //delete with moderator
+    } else if (currentAdmin3 == 1){
+        axios.delete('http://localhost:3000/message', {
+          params : { id : id },
+          headers:{
+              'Authorization': `Bearer ${token}`
+              
+          }})
+            .then(response => {
+              console.log(response)
+              location.reload();
+
+              })
+            .catch(error => {
+               console.log(error)            
+        })//fin de axios
+    }//fin de else if
+  },//fin de deletePost
 
   }//fin de methods
 }//fin de export default
@@ -217,7 +266,8 @@ h2{
 }
 
 .pseudo{
-  color: rgb(12, 187, 12)
+  color: rgb(36, 128, 36);
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 
@@ -230,6 +280,14 @@ h2{
   background: linear-gradient(#a9d1dd, #dce1e4);
   border-radius: 10px;
   box-shadow: 2px 2px 10px  #3b6a94;
+}
+
+.text-comment {
+  text-align: left;
+}
+
+.text-id {
+  text-decoration: underline;
 }
 
 </style>

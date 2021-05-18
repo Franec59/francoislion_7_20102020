@@ -84,6 +84,7 @@ methods : {
           )
             .then(function (response) {
               console.log(response);
+              this.$router.push('/forum');
           })
             .catch(function (error) {
               console.log(error);

@@ -14,20 +14,20 @@
         <!--<Pseudo />-->
         <div class=" pseudo mt-3">
           <label for="pseudo" class="form-label"></label>
-          <input type="text" class="form-control" id="pseudo" name="pseudo" placeholder="Votre pseudo" required pattern="[a-zA-Z0-9éèîïÎÏéèêçàîïë]{3,30}" v-model="userDel">
+          <input type="text" class="form-control" id="pseudo" name="pseudo" autocomplete = "username" placeholder="Votre pseudo" required pattern="[a-zA-Z0-9éèîïÎÏéèêçàîïë]{3,30}" v-model="userDel">
         </div>
         
         <!--<Email />-->
         <div class="mt-1">
           <label for="email" class="form-label"></label>
-          <input type="email" class="form-control" id="email" name="email" v-model="mailDel" placeholder="Email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" aria-describedby="emailHelp">
+          <input type="email" class="form-control" id="email" autocomplete = "email" name="email" v-model="mailDel" placeholder="Email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" aria-describedby="emailHelp">
         </div>
 
         <!--<Password />-->
         <div class="form-group mt-3">
 
         <label for="password" class="form-label passlabel">
-          <input v-bind:type="inputType" id="password" class="form-control" placeholder="Mot de passe" aria-describedby="passwordHelpBlock" required pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,20}" v-model="passDel">
+          <input v-bind:type="inputType" id="password" autocomplete = "current-password" class="form-control" placeholder="Mot de passe" aria-describedby="passwordHelpBlock" required pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,20}" v-model="passDel">
   
           <div class="password-icon">
             <svg xmlns="http://www.w3.org/2000/svg" v-if="seen" v-on:click="lookPassword()" width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
@@ -66,7 +66,7 @@ export default {
         seen: true,
         seenoff:false,
         inputType: "password",
-        userDEl: "",
+        userDel: "",
         mailDel: "",
         passDel: "",
         deleted : "",
@@ -88,12 +88,21 @@ export default {
       
       // Delete request
       deleteUser: function () {
-        const userDel = {
-          username : this.userDel,
-          email : this.mailDel,
-          password : this.passDel
-        }
-        axios.delete('http://localhost:3000/users', userDel)
+        /*
+        // Création d'un format
+        const formData = new FormData()
+        formData.append('username' ,this.userDel );
+        */
+        let data = JSON.stringify({
+        username: this.userDel,
+        })
+          
+        axios.delete('http://localhost:3000/users', data, { headers:{
+              //'content-type': 'multipart/form-data'
+              'Content-Type': 'application/json',
+              //'Authorization': `Bearer ${token}`
+              
+          }})
             .then(response => {
               console.log(response)
               this.deleted = "Votre profil a été supprimé !"
@@ -103,6 +112,21 @@ export default {
                console.log(error)
                
         })//fin de axios
+/*
+let data = JSON.stringify({
+        password: this.state.password,
+        username: this.state.email
+    })
+
+    axios.post('url', data, {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+*/
+
+
+
+
       },//fin de deleteUser 
   },//fin de methods
   
