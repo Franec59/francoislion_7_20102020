@@ -16,21 +16,23 @@ const con = mysql.createConnection({
 exports.createPost = (request, response) => {
   const req = request.query
   const query = "INSERT INTO messages SET ?";
-
+  console.log(req);
   var datePost = mysql.raw('now()');
+  
   if (typeof req.image === "undefined") {
     imageUrl = null;
   } else {
     imageUrl = `${request.protocol}://${request.get('host')}/images/${request.file.filename}`;
   }
-
+  
+  //const imageUrl = null
   //const imageUrl = `${request.protocol}://${request.get('host')}/images/${request.file.filename}`;
   const params = { user_mess: req.user_mess, titre: req.titre, contenu: req.contenu, image: imageUrl, date_post: datePost }
   con.query(query, params, (err, result, fields) => {
     if (err) throw err;
 
     response.json({ message: "Message posté !" })
-
+    
   });
 }
 
@@ -105,7 +107,7 @@ exports.deletePost = (request, response) => {
   const req = request.query
   const query = "DELETE FROM messages where id = ? ";
   const params = [req.id]
-  console.log(req.id);
+  //console.log(req.id);
   con.query(query, params, (err, result, fields) => {
     if (err) throw err;
 

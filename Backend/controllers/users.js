@@ -22,13 +22,14 @@ const con = mysql.createConnection({
 //===========================================
 
 exports.signup = async function (request, response) {
-  const req=request.query
-  const query="INSERT INTO users SET ?";
+  const req=request.body
+  const query="INSERT INTO users ( username, email, password) VALUE (?, ?, ?)";
   
   const saltRounds = 10;
   const encryptedPassword = await bcrypt.hash(req.password, saltRounds)
   
-  const params={username:req.username, email:req.email, password:encryptedPassword}
+  const params=[req.username, req.email, encryptedPassword]
+  
   con.query(query,params,(error,result,fields) => {
     if (error) {        
       response.send({          
@@ -284,4 +285,33 @@ exports.login = (request, response) => {
   }
 });
 };
+*/
+
+// sauvegarde de signUp
+//======================================
+/*
+exports.signup = async function (request, response) {
+  const req=request.query
+  const query="INSERT INTO users SET ?";
+  
+  const saltRounds = 10;
+  const encryptedPassword = await bcrypt.hash(req.password, saltRounds)
+  
+  const params={username:req.username, email:req.email, password:encryptedPassword}
+  
+  con.query(query,params,(error,result,fields) => {
+    if (error) {        
+      response.send({          
+      "code":400,          
+      "failed":"error occurred",          
+      "error" : error})      
+      } else {        
+      response.send({          
+      "code":200,          
+      "success":"user registered sucessfully"            
+      });        
+      }    
+  
+  })//fin de con.query
+};//fin de exports
 */
