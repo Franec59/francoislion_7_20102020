@@ -69,6 +69,7 @@ methods : {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         } else {
          axios.defaults.headers.common['Authorization'] = null;
+         swal("Connectez vous pour publier !", "Ou créez votre compte", "warning");
         }
 
         //récupération du nom de l'auteur du message
@@ -89,13 +90,11 @@ methods : {
             .then((response) => {
               console.log(response);
               this.$router.push("/Forum");
-              //this.$router.push({ path: '/forum' })
-              //this.$router.push({ name: 'Forum' })
                      
           })
             .catch((error) => {
               console.log(error);
-              return swal("Connectez vous pour publier !", "warning");
+              return swal("Oups, une erreur s'est produite !", "Veuillez réessayer", "error");
         });//fin de axios 
     }//fin de createUser
 },//fin de methods

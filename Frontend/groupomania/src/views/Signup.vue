@@ -12,24 +12,24 @@
             </div><!--fin de card-header-->
           
             <div class="card-body">
-              <form class="mt-3" id="form" @submit="checkForm">
+              <form class="mt-3" id="form" @submit="checkForm" v-on:submit.prevent="createUser()">
    
               <!--<Pseudo />-->
               <div class=" pseudo mt-3">
                 <label for="pseudo" class="form-label">Votre pseudo</label>
-                <input type="text" class="form-control" id="pseudo" name="pseudo" placeholder="Votre pseudo" required pattern="[a-zA-Z0-9éèîïÎÏéèêçàîïë]{3,30}" v-model="username">
+                <input type="text" class="form-control" id="pseudo" name="pseudo" placeholder="Votre pseudo" pattern="[a-zA-Z0-9éèîïÎÏéèêçàîïë]{3,30}" required v-model="username">
               </div>
         
               <!--<Email />-->
               <div class="mt-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" v-model="email" placeholder="Email" requiredpattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" aria-describedby="emailHelp">
+                <input type="email" class="form-control" id="email" name="email" v-model="email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required aria-describedby="emailHelp">
               </div>
 
               <!--<Password />-->
               <div class="form-group mt-3">
                 <label for="password" class="form-label passlabel">Mot de passe
-                <input v-bind:type="inputType" id="password" class="form-control" placeholder="Mot de passe" aria-describedby="passwordHelpBlock" required pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,20}" v-model="password">
+                <input v-bind:type="inputType" id="password" class="form-control" placeholder="Mot de passe" aria-describedby="passwordHelpBlock" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,20}" required v-model="password">
   
               <div class="password-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" v-if="seen" v-on:click="lookPassword()" width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
@@ -57,7 +57,7 @@
                 </p>
               </div>
             </div>     
-              <input class="btn text-light btn-a mt-1 mb-1" type="submit" value="Créer votre compte" v-on:click="createUser()">
+              <input class="btn text-light btn-a mt-1 mb-1" type="submit" value="Créer votre compte">
           </form>
             </div><!--fin de card-body-->
             <div class="card-footer">
@@ -116,18 +116,16 @@ export default {
           username : this.username,
           email : this.email,
           password : this.password
-
         }
         
         axios.post('http://localhost:3000/users', newUser )
-          
             .then(response => {
-              console.log(response)
-              this.$router.push('/'); 
+              console.log(response);
+              this.$router.push('/');
           })
             .catch(error => {
               console.log(error);
-              return swal("Votre saisie est inccorect !", "Veuillez réessayer", "warning");
+              return swal("Votre saisie est incorrecte !", "Veuillez réessayer", "warning");
         })//fin de axios 
     }//fin de createUser
 

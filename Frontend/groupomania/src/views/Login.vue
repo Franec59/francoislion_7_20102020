@@ -73,7 +73,6 @@ export default {
       userLog: "",
       mailLog: "",
       passLog: "",
-      login: "",
     };
   },
   methods: {
@@ -95,8 +94,6 @@ export default {
         .post("http://localhost:3000/users/login", user)
         .then((response) => {
           //console.log(response.data)
-
-          this.login = "vous etes connecté !";
 
           const tokenRep = response.data.token;
           const token = JSON.stringify(tokenRep);

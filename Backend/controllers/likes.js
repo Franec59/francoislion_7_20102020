@@ -1,12 +1,15 @@
 const mysql = require('mysql');
 
+//pour utiliser des variables d'environnement
+require('dotenv').config()
+
 //connexion à la BDD mySQL
 //========================================
 const con = mysql.createConnection({
 
     host: "localhost",
     user: "root",
-    password: "Onetipi4821!",
+    password: process.env.MYSQLBDD,
     database : "groupomania"
   
   });

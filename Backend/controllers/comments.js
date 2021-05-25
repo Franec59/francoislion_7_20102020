@@ -1,12 +1,15 @@
 const mysql = require('mysql');
 
+//pour utiliser des variables d'environnement
+require('dotenv').config()
+
 //connexion à la BDD mySQL
 //========================================
 const con = mysql.createConnection({
 
     host: "localhost",
     user: "root",
-    password: "Onetipi4821!",
+    password: process.env.MYSQLBDD,
     database : "groupomania"
   
   });
@@ -80,18 +83,3 @@ exports.getOneComments = (request, response) => {
   })//fin de query
 };//fin de exports
 
-
-/*
-//GET get one message sauvegarde
-//=================================================================
-
-exports.getOneComments = (request, response) => {
-  const req=request.query
-  con.query('SELECT * FROM comments where id=?',[req.id], (err,rows) => {
-    if(err) throw err;
-  
-    response.json({data:rows})
-  
-  })//fin de query
-};//fin de exports
-*/

@@ -86,7 +86,7 @@
 
 import axios from 'axios';
 import Comment from "@/components/Comment.vue";
-import swal from 'sweetalert';
+//import swal from 'sweetalert';
 
 export default {
     name: 'Forum',
@@ -172,7 +172,7 @@ export default {
               })
             .catch(error => {
                console.log(error);
-               return swal("Désolé, vous n'avez pas les droits pour supprimer ce message !", "warning");     
+               //return swal("Désolé, vous n'avez pas les droits pour supprimer ce message !", "warning");     
         })//fin de axios
 
     //delete with moderator
@@ -227,7 +227,7 @@ export default {
               })
             .catch(error => {
                console.log(error);
-               return swal("Désolé, vous n'avez pas les droits pour supprimer ce commentaire !", "warning");
+               //return swal("Désolé, vous n'avez pas les droits pour supprimer ce commentaire !", "warning");
 
         })//fin de axios
 

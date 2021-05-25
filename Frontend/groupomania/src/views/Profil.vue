@@ -108,11 +108,11 @@ export default {
               
           }})
             .then((response) => {
+              console.log(response);
               localStorage.removeItem('current-user');
               localStorage.removeItem('user-token');
               this.$router.push('/');
-              console.log(response);
-
+              
               })
             .catch((error) => {
                console.log(error);

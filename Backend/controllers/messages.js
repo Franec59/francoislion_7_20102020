@@ -1,12 +1,15 @@
 const mysql = require('mysql');
 
+//pour utiliser des variables d'environnement
+require('dotenv').config()
+
 //connexion à la BDD mySQL
 //========================================
 const con = mysql.createConnection({
 
   host: "localhost",
   user: "root",
-  password: "Onetipi4821!",
+  password: process.env.MYSQLBDD,
   database: "groupomania"
 
 });
@@ -79,10 +82,6 @@ exports.getAllPost = (request, response) => {
 
     response.json(messages);
 
-    /* if(err) throw err;
-   
-     response.json({data:rows});*/
-
   })
 };
 
@@ -107,7 +106,7 @@ exports.deletePost = (request, response) => {
   const req = request.query
   const query = "DELETE FROM messages where id = ? ";
   const params = [req.id]
-  //console.log(req.id);
+  console.log(req.id);
   con.query(query, params, (err, result, fields) => {
     if (err) throw err;
 
@@ -143,36 +142,3 @@ exports.requetePost = (request, response) => {
 
     })//fin de query
 };//fin de exports
-
-/*
-//GET sauvegarde
-//=================================================================
-
-exports.getAllPost = (request, response) => {
-
-  con.query('SELECT * FROM messages ORDER BY id DESC', (err,rows) => {
-    if(err) throw err;
-
-    response.json({data:rows});
-
-  })
-};
-*/
-
-
-//GET sauvegarde query avec comments
-//=================================================================
-/*
-exports.getAllPost = (request, response) => {
-
-  con.query('SELECT * FROM messages LEFT JOIN Comments ON messages.id = comments.message_id ORDER BY messages.id DESC', (err,rows) => {
-  //con.query('SELECT *, GROUP_CONCAT(Comments.comment, Comments.date_comment, Comments.user_name SEPARATOR ",") AS allComments FROM Messages LEFT JOIN Comments ON Messages.id = Comments.message_id GROUP BY Messages.id ORDER BY Messages.id DESC', (err,rows) => {
-  //con.query('SELECT *, GROUP_CONCAT(CONCAT_WS(",", Comments.comment, Comments.date_comment, Comments.user_name) SEPARATOR ";") AS allComments FROM Messages LEFT JOIN Comments ON Messages.id = Comments.message_id GROUP BY Messages.id ORDER BY Messages.id DESC', (err,rows) => {
-    
-    if(err) throw err;
-
-    response.json({data:rows});
-
-  })
-};
-*/

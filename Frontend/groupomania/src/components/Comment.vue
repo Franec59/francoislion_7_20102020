@@ -6,7 +6,7 @@
                 
             </div>
             <div class="col-md-3 mt-1 mb-1">
-                <button type="submit" class="btn btn-comment" v-on:click.prevent="addComment()">Publier</button>
+                <button type="submit" class="btn btn-comment" v-on:click="addComment()">Publier</button>
             </div>
             
         </form>
@@ -17,6 +17,7 @@
 
 <script>
 import axios from 'axios';
+import swal from 'sweetalert';
 
 export default{
 name:"Comment",
@@ -53,6 +54,7 @@ methods: {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         } else {
          axios.defaults.headers.common['Authorization'] = null;
+         swal("Connectez vous pour laisser un commentaire !", "Ou créez votre compte", "warning");
         }
 
         axios.post('http://localhost:3000/comments', comment, 
@@ -67,7 +69,10 @@ methods: {
           })
             .catch(function (error) {
               console.log(error);
-        });//fin de axios 
+              return swal("Oups, une erreur s'est produite !", "Veuillez réessayer", "warning");
+              
+        });//fin de axios
+
     }//fin de addcomment
 
 },//fin de methods
