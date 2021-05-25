@@ -6,7 +6,7 @@ const auth = require('../middleware/auth');
 router.post("/", userCtrl.signup);
 router.get("/", userCtrl.getAllUsers);
 router.post("/login", userCtrl.login);
-router.put("/", userCtrl.updateUser);
+router.put("/", auth, userCtrl.updateUser);
 router.delete("/", auth, userCtrl.deleteUser);
 
 //test de requete

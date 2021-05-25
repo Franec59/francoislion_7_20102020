@@ -123,18 +123,27 @@ exports.getAllUsers = (request, response) => {
   })
 };
 
-//PUT update : modifier son compte utilisateur
-//=================================================
+//PUT update : modifier son compte utilisateur ( supprimer mais garder messages et comments )
+//============================================================================================
 exports.updateUser= (request, response) => {
-const req=request.query
-const query="UPDATE users SET email=?, username=?, password=? where id =?";
-const params=[req.email, req.username, req.password, req.id]
-con.query(query,params,(err,result,fields) => {
-  if(err) throw err;
 
-  response.json({updated:result.affectedRows})
-
-})
+con.query("UPDATE users SET username='userdeleted' where username =?", [request.body.username], function (error, rows) {
+    if(error) throw error;
+    else { 
+      if(rows.length > 0) { 
+        bcrypt.compare(request.body.password, rows[0].password, function(error, row) {
+         if(row) {
+          response.status(200).json({message:"user updated"})
+          response.json({updated:result.affectedRows})
+      } else {
+        return response.status(400).send({ message: "Invalid Password" });
+      }});
+    } else {
+      return response.status(400).send({ message: "Invalid Pseudo" });
+    } 
+  }
+  
+  })
 };
 
 
@@ -152,3 +161,19 @@ exports.requeteUser = (request, response) => {
   
   })//fin de query
 };//fin de exports
+
+/*
+//PUT update : modifier son compte utilisateur
+//=================================================
+exports.updateUser= (request, response) => {
+  const req=request.query
+  const query="UPDATE users SET email=?, username=?, password=? where id =?";
+  const params=[req.email, req.username, req.password, req.id]
+  con.query(query,params,(err,result,fields) => {
+    if(err) throw err;
+  
+    response.json({updated:result.affectedRows})
+  
+  })
+  };
+  */

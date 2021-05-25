@@ -104,9 +104,9 @@ exports.updatePost = (request, response) => {
 //==============================================
 exports.deletePost = (request, response) => {
   const req = request.query
-  const query = "DELETE FROM messages where id = ? ";
+  const query = "DELETE FROM Messages WHERE id = ?";
   const params = [req.id]
-  console.log(req.id);
+  //console.log(req.id);
   con.query(query, params, (err, result, fields) => {
     if (err) throw err;
 

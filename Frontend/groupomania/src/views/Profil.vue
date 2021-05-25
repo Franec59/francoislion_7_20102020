@@ -119,7 +119,46 @@ export default {
                return swal("Identifiants incorrects !", "Veuillez réessayer", "error");
                
         })//fin de axios
-      },//fin de deleteUser 
+      },//fin de deleteUser
+      
+/*
+// Delete user ( update pour conserver messages et comments)
+      deleteUser: function () {
+        
+        //récupération du token
+        const token = JSON.parse(localStorage.getItem('user-token'))
+          if (token) {
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          } else {
+          axios.defaults.headers.common['Authorization'] = null;
+          }
+
+        const deleteUser = {
+          username : this.userDel,
+          password : this.passDel
+        }
+        
+        axios.put('http://localhost:3000/users', deleteUser, { 
+          headers:{
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+              
+          }})
+            .then((response) => {
+              console.log(response);
+              localStorage.removeItem('current-user');
+              localStorage.removeItem('user-token');
+              this.$router.push('/');
+              
+              })
+            .catch((error) => {
+               console.log(error);
+               return swal("Identifiants incorrects !", "Veuillez réessayer", "error");
+               
+        })//fin de axios
+      },//fin de updateUser
+*/
+
   },//fin de methods
   
 }//fin de export default

@@ -13,7 +13,7 @@
           </div><!--fin de card-header-->
           
           <div class="card-body">
-            <form class="mt-3" id="form" @submit="checkForm">
+            <form class="mt-3" id="form" @submit="checkForm" v-on:submit.prevent="sendLogin()">
    
               <!--<Pseudo />-->
               <div class="pseudo mt-3">
@@ -45,7 +45,8 @@
                 </label>
               </div><!--fin de form group-->
 
-              <input class="btn text-light btn-a mt-1 mb-1" type="submit" value="Se connecter" v-on:click.prevent="sendLogin()">
+              <input class="btn text-light btn-a mt-1 mb-1" type="submit" value="Se connecter">
+              <!--<input class="btn text-light btn-a mt-1 mb-1" type="submit" value="Se connecter" v-on:click.prevent="sendLogin()">-->
             </form>
           </div><!--fin de card-body-->
           <div class="card-footer">
@@ -102,7 +103,10 @@ export default {
           const userId = JSON.stringify(usernameResp);
           localStorage.setItem("current-user", userId);
 
-          this.$router.push("/Forum");
+          //location.reload();
+          this.$router.go();
+          //this.$router.push("/Forum");
+          
         })
         .catch((error) => {
           console.log(error);
