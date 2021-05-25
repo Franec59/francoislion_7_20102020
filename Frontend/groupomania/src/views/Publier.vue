@@ -39,6 +39,7 @@
 
 <script>
 import axios from 'axios';
+import swal from 'sweetalert';
 
 export default {
     name : "Publier",
@@ -58,10 +59,9 @@ methods : {
     },
     // POST Send message
       publier () {
-
         // Création d'un formData obligatoire pour envoi de l'image
         const formData = new FormData()
-        formData.append('image', this.file );
+          formData.append('image', this.file );
 
         //récupération du token
         const token = JSON.parse(localStorage.getItem('user-token'))
@@ -76,22 +76,26 @@ methods : {
         const currentUser2 = JSON.parse(currentUser);
         const currentUser3 = currentUser2[0].username
         
-        axios.post('http://localhost:3000/message', formData , {params:{
+        axios.post('http://localhost:3000/message', formData , { params:{
             user_mess : currentUser3,
             titre : this.titleP,
             contenu : this.textP,
-        }},
-          {headers:{
+          },
+          headers:{
               'content-type': 'multipart/form-data',
               'Authorization': `Bearer ${token}`  
           }}
           )
-            .then(function (response) {
+            .then((response) => {
               console.log(response);
-            
+              this.$router.push("/Forum");
+              //this.$router.push({ path: '/forum' })
+              //this.$router.push({ name: 'Forum' })
+                     
           })
-            .catch(function (error) {
+            .catch((error) => {
               console.log(error);
+              return swal("Connectez vous pour publier !", "warning");
         });//fin de axios 
     }//fin de createUser
 },//fin de methods

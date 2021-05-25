@@ -57,7 +57,7 @@
                 </p>
               </div>
             </div>     
-              <input class="btn text-light btn-a mt-1 mb-1" type="submit" value="Créer votre compte" v-on:click.prevent="createUser()">
+              <input class="btn text-light btn-a mt-1 mb-1" type="submit" value="Créer votre compte" v-on:click="createUser()">
           </form>
             </div><!--fin de card-body-->
             <div class="card-footer">
@@ -75,6 +75,7 @@
 <script>
 
 import axios from 'axios';
+import swal from 'sweetalert';
 
 export default {
   name: 'Signup',
@@ -126,6 +127,7 @@ export default {
           })
             .catch(error => {
               console.log(error);
+              return swal("Votre saisie est inccorect !", "Veuillez réessayer", "warning");
         })//fin de axios 
     }//fin de createUser
 

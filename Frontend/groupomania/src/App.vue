@@ -26,7 +26,7 @@
 
     <div class="col-3 col-md-2">
       <router-link to="/publier">
-          <a class="nav-link active text-light" href="#" v-if="publier">Publier</a>
+          <a class="nav-link active text-light" href="#">Publier</a>
       </router-link>
 
     </div>
@@ -44,7 +44,11 @@
           <a class="nav-link active" href="#">S'inscrire</a>
         </router-link>        
         <router-link to="/profil">
-          <a class="nav-link active" href="#">Voir le profil</a>
+          <!--<a class="nav-link active" href="#">Voir le profil</a>-->
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-person-circle text-light mt-2" viewBox="0 0 16 16">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+          </svg>
         </router-link>      
         <router-link to="/">
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-power text-light mt-2" viewBox="0 0 16 16" v-on:click.prevent="logOut()">
@@ -68,7 +72,7 @@ export default {
   name: 'App',
   data() {
     return {
-      publier : false,
+
          
     }
   },// fin de data
@@ -81,12 +85,6 @@ export default {
       
     }
   },//fin de methods
-
-mounted: function () {
-      if(localStorage.getItem('current-user') !=undefined){
-        this.publier = true;
-      }
-}//fin de created
 
 }//fin de export default
 </script>
@@ -117,6 +115,10 @@ a, a:hover, a:focus, a:active {
   border-bottom: 1rem solid rgb(186,78,85);
   border-image: linear-gradient(to right, rgb(186,78,85), rgb(226, 214, 214));
   border-image-slice: 1;
+}
+
+.bi-power, .bi-person-circle {
+  margin-left : 1rem;
 }
 
 

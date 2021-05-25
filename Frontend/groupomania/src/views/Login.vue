@@ -60,6 +60,7 @@
 
 <script>
 import axios from "axios";
+import swal from 'sweetalert';
 
 export default {
   name: "Login",
@@ -110,6 +111,7 @@ export default {
           console.log(error);
           localStorage.removeItem("user-token"); // if the request fails, remove any possible user token if possible
           localStorage.removeItem("current-user");
+          return swal("Vos identifiants de connexions sont incorrects !", " Veuillez réssayer", "warning");
         }); //fin de axios
     }, //fin de sendLogin
   }, //fin de methods

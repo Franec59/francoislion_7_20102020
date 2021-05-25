@@ -57,8 +57,8 @@ exports.updateComments = (request, response) => {
 //==============================================
 exports.deleteComments = (request, response) => {
   const req=request.query
-  const query="DELETE FROM comments where id = ? ";
-  const params=[req.id]
+  const query="DELETE FROM comments where comment_id = ? ";
+  const params=[req.comment_id]
   con.query(query,params,(err,result,fields) => {
     if(err) throw err;
   

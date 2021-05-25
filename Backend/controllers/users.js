@@ -80,37 +80,32 @@ exports.login = (request, response) => {
   }
 });
 };
-/*
-//DELETE : supprimer son compte
-//========================================================
-exports.deleteUser = (request, response) => {
-  const req=request.query
-  const query="DELETE FROM users WHERE email =? && username =?";
-  const params=[req.email, req.username]
-  con.query(query,params,(err,result,fields) => {
-    if(err) throw err;
-  
-    response.json({deleted:result.affectedRows}) 
-  
-  })
-};
-*/
+
 
 //DELETE : supprimer son compte avec body
 //========================================================
-exports.deleteUser = (req, res) => {
+exports.deleteUser = (request, response) => {
   
-  console.log(req.body)
-  con.query("DELETE FROM users WHERE username =?", [req.body.username], function (error, results ) {
+  console.log(request.body)
+
+  con.query("DELETE FROM users WHERE username =?", [request.body.username], function (error, rows) {
     if(error) throw error;
-  
-    //res.end('Profil supprimé !');
-    res.json({deleted:results.affectedRows}) 
+    else { 
+      if(rows.length > 0) { 
+        bcrypt.compare(request.body.password, rows[0].password, function(error, row) {
+         if(row) {
+          response.status(200).json({message:"user deleted"})
+          response.json({deleted:row.affectedRows}) 
+      } else {
+        return response.status(400).send({ message: "Invalid Password" });
+      }});
+    } else {
+      return response.status(400).send({ message: "Invalid Pseudo" });
+    } 
+  }
   
   })
 };
-
-
 
 /*
 //delete user avec body
@@ -314,4 +309,35 @@ exports.signup = async function (request, response) {
   
   })//fin de con.query
 };//fin de exports
+*/
+
+/*
+//DELETE : supprimer son compte
+//========================================================
+exports.deleteUser = (request, response) => {
+  const req=request.query
+  const query="DELETE FROM users WHERE email =? && username =?";
+  const params=[req.email, req.username]
+  con.query(query,params,(err,result,fields) => {
+    if(err) throw err;
+  
+    response.json({deleted:result.affectedRows}) 
+  
+  })
+};
+*/
+/*
+//DELETE : supprimer son compte avec body fonctionne
+//========================================================
+exports.deleteUser = (req, res) => {
+  
+  console.log(req.body)
+  con.query("DELETE FROM users WHERE username =?", [req.body.username], function (error, results ) {
+    if(error) throw error;
+  
+    //res.end('Profil supprimé !');
+    res.json({deleted:results.affectedRows}) 
+  
+  })
+};
 */

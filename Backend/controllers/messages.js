@@ -16,10 +16,10 @@ const con = mysql.createConnection({
 exports.createPost = (request, response) => {
   const req = request.query
   const query = "INSERT INTO messages SET ?";
-  console.log(req);
+  console.log(request.file);
   var datePost = mysql.raw('now()');
   
-  if (typeof req.image === "undefined") {
+  if (typeof request.file === "undefined") {
     imageUrl = null;
   } else {
     imageUrl = `${request.protocol}://${request.get('host')}/images/${request.file.filename}`;
@@ -41,7 +41,7 @@ exports.createPost = (request, response) => {
 
 exports.getAllPost = (request, response) => {
 
-  con.query('SELECT * FROM Messages LEFT JOIN Comments ON Messages.id = Comments.message_id ORDER BY Messages.id DESC', (err, rows) => {
+  con.query('SELECT *, DATE_FORMAT(date_post, "%d.%m.%Y %à %Hh%i") AS date_post, DATE_FORMAT(date_comment, "%d.%m.%Y %à %Hh%i") AS date_comment FROM Messages LEFT JOIN Comments ON Messages.id = Comments.message_id ORDER BY Messages.id DESC', (err, rows) => {
 
     var messages = [];
     rows.forEach(row => {

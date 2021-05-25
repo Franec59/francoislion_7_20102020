@@ -39,7 +39,7 @@
                 </label>
               </div>
        
-            <input class="btn text-light btn-a mt-3 mb-1" type="submit" value="Supprimer" v-on:click.prevent="deleteUser()">
+            <input class="btn text-light btn-a mt-3 mb-1" type="submit" value="Supprimer" v-on:click="deleteUser()">
         
             </form>             
           </div><!--fin de card body-->
@@ -47,8 +47,6 @@
           </div><!--fin de card-footer-->
         </div>
       </div><!--fin de la div formulaire-->
-
-        <h2 class="delete mt-5">{{ deleted }}</h2>
 
       <div class="col-1 col-lg-4"></div>
     </div><!--fin de row-->
@@ -58,6 +56,7 @@
 
 <script>
 import axios from 'axios';
+import swal from 'sweetalert';
 
 export default {
   name: 'Profil',
@@ -69,7 +68,6 @@ export default {
         inputType: "password",
         userDel: "",
         passDel: "",
-        deleted : "",
         
       }
     
@@ -89,27 +87,36 @@ export default {
       // Delete request
       deleteUser: function () {
         
+        //récupération du token
+        const token = JSON.parse(localStorage.getItem('user-token'))
+          if (token) {
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          } else {
+          axios.defaults.headers.common['Authorization'] = null;
+          }
+
         const deleteUser = {
-          username : this.userDel
+          username : this.userDel,
+          password : this.passDel
         }
         
         //https://stackoverflow.com/a/56210828
         axios.delete('http://localhost:3000/users', { data: deleteUser }, { 
           headers:{
-              //'content-type': 'multipart/form-data'
               'Content-Type': 'application/json',
-              //'Authorization': `Bearer ${token}`
+              'Authorization': `Bearer ${token}`
               
           }})
-            .then(response => {
-              console.log(response)
-              console.log(this.userDel)
-              this.deleted = "Votre profil a été supprimé !"
-              this.$router.push('/')
+            .then((response) => {
+              localStorage.removeItem('current-user');
+              localStorage.removeItem('user-token');
+              this.$router.push('/');
+              console.log(response);
 
               })
-            .catch(error => {
-               console.log(error)
+            .catch((error) => {
+               console.log(error);
+               return swal("Identifiants incorrects !", "Veuillez réessayer", "error");
                
         })//fin de axios
       },//fin de deleteUser 

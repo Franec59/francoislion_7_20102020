@@ -6,7 +6,7 @@
                 
             </div>
             <div class="col-md-3 mt-1 mb-1">
-                <button type="submit" class="btn btn-success" v-on:click.prevent="addComment()">Publier</button>
+                <button type="submit" class="btn btn-comment" v-on:click.prevent="addComment()">Publier</button>
             </div>
             
         </form>
@@ -77,5 +77,17 @@ methods: {
 
 
 <style scoped>
+
+.btn-comment {
+    background-color: rgb(18, 36, 66);
+    border-radius: 10px;
+    color:rgb(226, 214, 214);
+
+}
+
+.btn-comment:hover {
+  box-shadow: 4px 4px 6px rgb(18, 36, 66);
+  color: rgb(186, 78, 85);
+}
 
 </style>

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import Login from '../views/Login.vue'
 import Forum from '../views/Forum.vue'
+import Publier from '../views/Publier.vue'
 
 const routes = [
   {
@@ -43,7 +44,8 @@ const routes = [
   {
     path: '/publier',
     name: 'Publier',
-    component: () => import('../views/Publier.vue'),
+    //component: () => import('../views/Publier.vue'),
+    component : Publier,
     meta : {
       title : "Publier"
     }
