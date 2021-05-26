@@ -14,7 +14,7 @@ const con = mysql.createConnection({
     password: process.env.MYSQLBDD,
     database : "groupomania"
   
-  });
+});
 
   con.connect(function(err) {
     if (err) throw err
@@ -23,7 +23,6 @@ const con = mysql.createConnection({
 
 //signup + bcrypt
 //===========================================
-
 exports.signup = async function (request, response) {
   const req=request.body
   const query="INSERT INTO users ( username, email, password) VALUE (?, ?, ?)";
@@ -51,7 +50,6 @@ exports.signup = async function (request, response) {
 
 //login ( GET one user ) avec body
 //=================================================================
-
 exports.login = (request, response) => {
     
   const req=request.body
@@ -113,7 +111,6 @@ exports.deleteUser = (request, response) => {
 
 //GET : tous les users
 //==================================================
-
 exports.getAllUsers = (request, response) => {
 
   con.query('SELECT * FROM users', (err,rows) => {
@@ -149,7 +146,6 @@ con.query("UPDATE users SET username='userdeleted' where username =?", [request.
 
 //test requete tous les messages d'un user
 //=================================================================
-
 exports.requeteUser = (request, response) => {
   const req=request.query
   con.query('SELECT * FROM users INNER JOIN messages ON users.id = messages.user_id where users.id=?'

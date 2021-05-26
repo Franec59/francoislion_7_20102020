@@ -12,6 +12,12 @@
           <img src="./assets/logo-sphere.png" alt="logo Groupomania seul" width="28" height="28" class="align-text-top d-inline-block d-sm-none">
         </a>
       </router-link>
+      <div class="moderator" v-if="admin">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-file-person" viewBox="0 0 16 16">
+          <path d="M12 1a1 1 0 0 1 1 1v10.755S12 11 8 11s-5 1.755-5 1.755V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/>
+          <path d="M8 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+        </svg> -isAdmin
+      </div>
     </div>
 
     <div class="col-3 col-md-2 icons">
@@ -38,10 +44,10 @@
     <div class="collapse navbar-collapse col-3 col-md-5" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <router-link to="/">
-          <a class="nav-link active" href="#">Se connecter</a>
+          <a class="nav-link active" href="#" v-if="login">Se connecter</a>
         </router-link>
         <router-link to="/signup">
-          <a class="nav-link active" href="#">S'inscrire</a>
+          <a class="nav-link active" href="#" v-if="signup">S'inscrire</a>
         </router-link>        
         <router-link to="/profil">
           <!--<a class="nav-link active" href="#">Voir le profil</a>-->
@@ -74,26 +80,70 @@ export default {
     return {
       publier: false,
       profil: false,
-      deconnecter: false
+      deconnecter: false,
+      login: true,
+      signup: true,
+      admin: false
          
     }
   },// fin de data
+  
   created: function () {
     //récupération du token
-        const token = JSON.parse(localStorage.getItem('user-token'))
-      if(token){
-        this.publier = true,
-        this.profil = true,
-        this.deconnecter = true
-      }
-
+        const token = JSON.parse(localStorage.getItem('user-token'));  
+        const currentAdmin = localStorage.getItem('current-user');
+          if(currentAdmin){
+            const currentAdmin2 = JSON.parse(currentAdmin);
+            const currentAdmin3 = currentAdmin2[0].isAdmin
+              if(token && currentAdmin3 == 0){
+                this.publier = true,
+                this.profil = true,
+                this.deconnecter = true,
+                this.login = false,
+                this.signup = false
+          
+              } else if (token && currentAdmin3 == 1){
+                this.publier = true,
+                this.profil = true,
+                this.deconnecter = true,
+                this.login = false,
+                this.signup = false,
+                this.admin = true
+              }
+          }
+  },
+  
+  watch: {
+    '$route':'refreshData'
   },
   methods: {
+    refreshData: function () {
+      const token = JSON.parse(localStorage.getItem('user-token'));
+      const currentAdmin = localStorage.getItem('current-user');
+      if(currentAdmin){
+        const currentAdmin2 = JSON.parse(currentAdmin);
+        const currentAdmin3 = currentAdmin2[0].isAdmin
+          if(token && currentAdmin3 == 0){
+            this.publier = true,
+            this.profil = true,
+            this.deconnecter = true,
+            this.login = false,
+            this.signup = false
+          
+          } else if (token && currentAdmin3 == 1){
+            this.publier = true,
+            this.profil = true,
+            this.deconnecter = true,
+            this.login = false,
+            this.signup = false,
+            this.admin = true
+          }  
+        }
+    },
     
     logOut: function () {
       localStorage.removeItem('current-user');
       localStorage.removeItem('user-token');
-      //this.$router.push('/');
       location.reload();
       
     }
@@ -110,7 +160,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /*background-color:rgb(22,24,45);*/
+  
 }
 
 a, a:hover, a:focus, a:active {
@@ -134,5 +184,8 @@ a, a:hover, a:focus, a:active {
   margin-left : 1rem;
 }
 
+.moderator {
+  color: rgb(186,78,85);
+}
 
 </style>

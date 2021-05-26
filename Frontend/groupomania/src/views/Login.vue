@@ -76,6 +76,7 @@ export default {
       passLog: "",
     };
   },
+  
   methods: {
     lookPassword: function () {
       (this.seen = false), (this.seenoff = true), (this.inputType = "text");
@@ -103,9 +104,7 @@ export default {
           const userId = JSON.stringify(usernameResp);
           localStorage.setItem("current-user", userId);
 
-          //location.reload();
-          this.$router.go();
-          //this.$router.push("/Forum");
+          this.$router.push("/Forum");
           
         })
         .catch((error) => {

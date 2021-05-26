@@ -28,8 +28,6 @@ exports.createPost = (request, response) => {
     imageUrl = `${request.protocol}://${request.get('host')}/images/${request.file.filename}`;
   }
   
-  //const imageUrl = null
-  //const imageUrl = `${request.protocol}://${request.get('host')}/images/${request.file.filename}`;
   const params = { user_mess: req.user_mess, titre: req.titre, contenu: req.contenu, image: imageUrl, date_post: datePost }
   con.query(query, params, (err, result, fields) => {
     if (err) throw err;
@@ -41,7 +39,6 @@ exports.createPost = (request, response) => {
 
 //GET
 //=================================================================
-
 exports.getAllPost = (request, response) => {
 
   con.query('SELECT *, DATE_FORMAT(date_post, "%d.%m.%Y %à %Hh%i") AS date_post, DATE_FORMAT(date_comment, "%d.%m.%Y %à %Hh%i") AS date_comment FROM Messages LEFT JOIN Comments ON Messages.id = Comments.message_id ORDER BY Messages.id DESC', (err, rows) => {
@@ -85,7 +82,6 @@ exports.getAllPost = (request, response) => {
   })
 };
 
-
 //PUT update : modifier son message
 //=================================================
 exports.updatePost = (request, response) => {
@@ -116,8 +112,7 @@ exports.deletePost = (request, response) => {
 };
 
 //GET get one message
-//=================================================================
-
+//================================================
 exports.getOnePost = (request, response) => {
   const req = request.query
   con.query('SELECT * FROM messages where id=?', [req.id], (err, rows) => {
@@ -129,7 +124,7 @@ exports.getOnePost = (request, response) => {
 };//fin de exports
 
 //test requete sur message
-//=================================================================
+//===========================================
 
 exports.requetePost = (request, response) => {
   const req = request.query

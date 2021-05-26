@@ -11,8 +11,15 @@ const routes = [
     component: Login,
     meta : {
       title : "Se connecter"
+    }, 
+    beforeEnter: (to, from, next) => {
+      const token = JSON.parse(localStorage.getItem('user-token'));
+      if(token){
+        next({name: 'Forum'})
+      } else {
+        next();
+      }
     }
-
   },
   
   {
@@ -23,16 +30,25 @@ const routes = [
     meta : {
       title : "Forum"
     }
-    
   },
+
   {
     path: '/signup',
     name: 'Signup',
     component: () => import('../views/Signup.vue'),
     meta : {
       title : "S'inscrire"
+    },
+    beforeEnter: (to, from, next) => {
+      const token = JSON.parse(localStorage.getItem('user-token'));
+      if(token){
+        next({name: 'Forum'})
+      } else {
+        next();
+      }
     }
   },
+  
   {
     path: '/profil',
     name: 'Profil',
@@ -44,21 +60,12 @@ const routes = [
   {
     path: '/publier',
     name: 'Publier',
-    //component: () => import('../views/Publier.vue'),
     component : Publier,
     meta : {
       title : "Publier"
     }
   },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  },
-
+  
 ]
 
 const router = createRouter({
