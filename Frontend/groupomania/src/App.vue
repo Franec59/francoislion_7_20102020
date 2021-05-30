@@ -93,7 +93,7 @@ export default {
     //récupération du token
         const token = JSON.parse(localStorage.getItem('user-token'));  
         const currentAdmin = this.admin;
-          
+          if(token){
               if(token && currentAdmin == 0){
                 this.publier = true,
                 this.profil = true,
@@ -109,15 +109,18 @@ export default {
                 this.signup = false,
                 this.admin = true
               }
+          }
   },
   
   watch: {
     '$route':'refreshData'
+    
   },
   methods: {
     refreshData: function () {
       const token = JSON.parse(localStorage.getItem('user-token'));
       const currentAdmin = this.admin;
+      if(token){
           if(token && currentAdmin == 0){
             this.publier = true,
             this.profil = true,
@@ -132,7 +135,8 @@ export default {
             this.login = false,
             this.signup = false,
             this.admin = true
-          }  
+          }
+      } 
     },
     
     logOut: function () {
