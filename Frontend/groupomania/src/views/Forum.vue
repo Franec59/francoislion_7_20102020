@@ -1,8 +1,7 @@
 <template>
   <div class="container home pt-3">
     <img src="../assets/logo-red2.png" alt="logo groupomania rouge" class="logo-groupo-red">
-    <h3 class="user">Bonjour  <span class="badge">{{ pseudo }}</span>  bienvenue sur le forum !</h3>
-    
+    <h3 class="user">Bonjour  <span class="badge">{{ $store.state.username }}</span>  bienvenue sur le forum !</h3>
     <div class="row">
       <div class="col-1 col-lg-3"></div>
       
@@ -101,10 +100,8 @@ export default {
         off: false,
         imgoff: false,
         commentsoff : false,
-        pseudo : "",
         footer: false,
-        bin: false
-      
+        bin: false   
       }
     },   
     mounted () {
@@ -116,23 +113,19 @@ export default {
         
         })
       .catch(error => console.log(error))
-    
     },
+  
     created: function () {
-      
-      if(localStorage.getItem('current-user') !=null){
-        const currentUser = localStorage.getItem('current-user');
-        const currentUser2 = JSON.parse(currentUser);
-        const currentUser3 = currentUser2[0].username
-
-          if(currentUser3 != null){
-            this.pseudo = currentUser3,
-            this.commentsoff = true
-            this.footer = true
-            this.bin = true
-          }
+      this.user = this.$store.state.username;
+      this.admin = this.$store.state.isAdmin;
+      var currentUser3 = this.user
+      if(currentUser3 != null){
+        this.commentsoff = true
+        this.footer = true
+        this.bin = true
       }
   },
+
   methods :{
   
   deletePost:function(id, username) {
@@ -145,14 +138,12 @@ export default {
         axios.defaults.headers.common['Authorization'] = null;
       }
 
-    const currentAdmin = localStorage.getItem('current-user');
-    const currentAdmin2 = JSON.parse(currentAdmin);
-    const currentAdmin3 = currentAdmin2[0].isAdmin
+    //vuex*****************************
+    var currentAdmin3 = this.admin;
+    var currentUser3 = this.user;
+    console.log(currentAdmin3);
+    console.log(currentUser3);
 
-    const currentUser = localStorage.getItem('current-user');
-    const currentUser2 = JSON.parse(currentUser);
-    const currentUser3 = currentUser2[0].username
-    
     if (currentAdmin3 == 0 && currentUser3 == username ){
       
         axios.delete('http://localhost:3000/message', {
@@ -204,14 +195,12 @@ export default {
         axios.defaults.headers.common['Authorization'] = null;
       }
 
-    const currentAdmin = localStorage.getItem('current-user');
-    const currentAdmin2 = JSON.parse(currentAdmin);
-    const currentAdmin3 = currentAdmin2[0].isAdmin
+   //vuex*****************************
+   var currentAdmin3 = this.admin;
+   var currentUser3 = this.user;
+   console.log(currentAdmin3);
+   console.log(currentUser3);
 
-    const currentUser = localStorage.getItem('current-user');
-    const currentUser2 = JSON.parse(currentUser);
-    const currentUser3 = currentUser2[0].username
-    
     if (currentAdmin3 == 0 && currentUser3 == username ){
       
         axios.delete('http://localhost:3000/comments', {
@@ -252,7 +241,6 @@ export default {
           return swal("Vous n'avez pas les droits pour supprimer ce commentaire !", "désolé ...", "warning");
       }
   },//fin de deletecomment
-
   }//fin de methods
 }//fin de export default
 
@@ -264,10 +252,10 @@ export default {
   height: 100%;
   background-image: url("../assets/people-B.png");
   background-position: center;
-  /*background-repeat: no-repeat, repeat;*/
+  background-repeat: no-repeat, repeat;
   background-size: contain;
   background-attachment: fixed;
-  padding-bottom: 15rem;
+  padding-bottom: 2rem;
 }
 
 .post {

@@ -31,18 +31,18 @@ data(){
     }
 
 },
+
+created: function () {
+      this.user = this.$store.state.username;
+    
+  },
 methods: {
 // POST Send comment
       addComment : function () {
         
-        //récupération du nom de l'auteur du message
-        const currentUser = localStorage.getItem('current-user');
-        const currentUser2 = JSON.parse(currentUser);
-        const currentUser3 = currentUser2[0].username
-
         //objet post
           const comment = {
-          user_name : currentUser3,
+          user_name : this.user,
           message_id : this.messageId,
           comment : this.myComment,
         

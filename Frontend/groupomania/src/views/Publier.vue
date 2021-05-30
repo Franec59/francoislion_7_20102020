@@ -50,10 +50,15 @@ export default {
             file: ""
         }
     },//fin de data
+
+  created: function () {
+      this.user = this.$store.state.username;
+    
+  },
+
 methods : {
 
     onSelect(){
-        //this.file = event.target.files[0];
         this.file = this.$refs.file.files[0];
         console.log(this.file)
     },
@@ -71,14 +76,9 @@ methods : {
          axios.defaults.headers.common['Authorization'] = null;
          swal("Connectez vous pour publier !", "Ou créez votre compte", "warning");
         }
-
-        //récupération du nom de l'auteur du message
-        const currentUser = localStorage.getItem('current-user');
-        const currentUser2 = JSON.parse(currentUser);
-        const currentUser3 = currentUser2[0].username
-        
+       
         axios.post('http://localhost:3000/message', formData , { params:{
-            user_mess : currentUser3,
+            user_mess : this.user,
             titre : this.titleP,
             contenu : this.textP,
           },

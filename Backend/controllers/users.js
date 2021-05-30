@@ -83,32 +83,6 @@ exports.login = (request, response) => {
 };
 
 
-//DELETE : supprimer son compte avec body
-//========================================================
-exports.deleteUser = (request, response) => {
-  
-  console.log(request.body)
-
-  con.query("DELETE FROM users WHERE username =?", [request.body.username], function (error, rows) {
-    if(error) throw error;
-    else { 
-      if(rows.length > 0) { 
-        bcrypt.compare(request.body.password, rows[0].password, function(error, row) {
-         if(row) {
-          response.status(200).json({message:"user deleted"})
-          response.json({deleted:row.affectedRows}) 
-      } else {
-        return response.status(400).send({ message: "Invalid Password" });
-      }});
-    } else {
-      return response.status(400).send({ message: "Invalid Pseudo" });
-    } 
-  }
-  
-  })
-};
-
-
 //GET : tous les users
 //==================================================
 exports.getAllUsers = (request, response) => {
@@ -158,18 +132,15 @@ exports.requeteUser = (request, response) => {
   })//fin de query
 };//fin de exports
 
-/*
-//PUT update : modifier son compte utilisateur
-//=================================================
-exports.updateUser= (request, response) => {
-  const req=request.query
-  const query="UPDATE users SET email=?, username=?, password=? where id =?";
-  const params=[req.email, req.username, req.password, req.id]
-  con.query(query,params,(err,result,fields) => {
+
+
+//DELETE User 
+//==============================================
+exports.deleteUser = (request, response) => {
+  
+  con.query("DELETE FROM users WHERE username =?", [request.body.username], function (err, rows) {
     if(err) throw err;
-  
-    response.json({updated:result.affectedRows})
-  
+      response.json({deleted:rows.affectedRows})
+    
   })
-  };
-  */
+};

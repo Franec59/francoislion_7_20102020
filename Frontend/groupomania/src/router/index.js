@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Login.vue'
 import Forum from '../views/Forum.vue'
 import Publier from '../views/Publier.vue'
+import Profil from '../views/Profil.vue'
 
 const routes = [
   {
@@ -52,7 +53,7 @@ const routes = [
   {
     path: '/profil',
     name: 'Profil',
-    component: () => import('../views/Profil.vue'),
+    component: Profil,
     meta : {
       title : "Mon compte"
     }

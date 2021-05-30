@@ -76,7 +76,7 @@ export default {
       passLog: "",
     };
   },
-  
+
   methods: {
     lookPassword: function () {
       (this.seen = false), (this.seenoff = true), (this.inputType = "text");
@@ -95,14 +95,22 @@ export default {
       axios
         .post("http://localhost:3000/users/login", user)
         .then((response) => {
-          //console.log(response.data)
+          console.log(response.data.data)
 
           const tokenRep = response.data.token;
           const token = JSON.stringify(tokenRep);
           localStorage.setItem("user-token", token); // store the token in localstorage
-          const usernameResp = response.data.data;
-          const userId = JSON.stringify(usernameResp);
-          localStorage.setItem("current-user", userId);
+
+          //vuex ******************************************
+          const usernameRes = response.data.data[0].username;
+          this.$store.commit('SET_USER', usernameRes);
+          console.log(usernameRes);
+
+          const isAdminRes = response.data.data[0].isAdmin;
+          this.$store.commit('SET_ADMIN', isAdminRes);
+          console.log(isAdminRes);
+
+          //***************************************** */
 
           this.$router.push("/Forum");
           
@@ -110,10 +118,10 @@ export default {
         .catch((error) => {
           console.log(error);
           localStorage.removeItem("user-token"); // if the request fails, remove any possible user token if possible
-          localStorage.removeItem("current-user");
           return swal("Vos identifiants de connexions sont incorrects !", " Veuillez réssayer", "warning");
         }); //fin de axios
     }, //fin de sendLogin
+
   }, //fin de methods
 }; //fin de export default
 </script>

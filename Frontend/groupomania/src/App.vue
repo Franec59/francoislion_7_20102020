@@ -89,20 +89,19 @@ export default {
   },// fin de data
   
   created: function () {
+      this.admin = this.$store.state.isAdmin;
     //récupération du token
         const token = JSON.parse(localStorage.getItem('user-token'));  
-        const currentAdmin = localStorage.getItem('current-user');
-          if(currentAdmin){
-            const currentAdmin2 = JSON.parse(currentAdmin);
-            const currentAdmin3 = currentAdmin2[0].isAdmin
-              if(token && currentAdmin3 == 0){
+        const currentAdmin = this.admin;
+          
+              if(token && currentAdmin == 0){
                 this.publier = true,
                 this.profil = true,
                 this.deconnecter = true,
                 this.login = false,
                 this.signup = false
           
-              } else if (token && currentAdmin3 == 1){
+              } else if (token && currentAdmin == 1){
                 this.publier = true,
                 this.profil = true,
                 this.deconnecter = true,
@@ -110,7 +109,6 @@ export default {
                 this.signup = false,
                 this.admin = true
               }
-          }
   },
   
   watch: {
@@ -119,18 +117,15 @@ export default {
   methods: {
     refreshData: function () {
       const token = JSON.parse(localStorage.getItem('user-token'));
-      const currentAdmin = localStorage.getItem('current-user');
-      if(currentAdmin){
-        const currentAdmin2 = JSON.parse(currentAdmin);
-        const currentAdmin3 = currentAdmin2[0].isAdmin
-          if(token && currentAdmin3 == 0){
+      const currentAdmin = this.admin;
+          if(token && currentAdmin == 0){
             this.publier = true,
             this.profil = true,
             this.deconnecter = true,
             this.login = false,
             this.signup = false
           
-          } else if (token && currentAdmin3 == 1){
+          } else if (token && currentAdmin == 1){
             this.publier = true,
             this.profil = true,
             this.deconnecter = true,
@@ -138,12 +133,12 @@ export default {
             this.signup = false,
             this.admin = true
           }  
-        }
     },
     
     logOut: function () {
-      localStorage.removeItem('current-user');
       localStorage.removeItem('user-token');
+      this.$store.commit('SET_USER', null);
+      this.$store.commit('SET_ADMIN', null);
       location.reload();
       
     }
