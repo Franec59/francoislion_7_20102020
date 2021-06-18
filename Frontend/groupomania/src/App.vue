@@ -89,10 +89,10 @@ export default {
   },// fin de data
   
   created: function () {
-      this.admin = this.$store.state.isAdmin;
+      this.adminUser = this.$store.state.isAdmin; //note modif this.admin en this.adminUser + ligne 95 et 122
     //récupération du token
         const token = JSON.parse(localStorage.getItem('user-token'));  
-        const currentAdmin = this.admin;
+        const currentAdmin = this.adminUser;
           if(token){
               if(token && currentAdmin == 0){
                 this.publier = true,
@@ -113,13 +113,14 @@ export default {
   },
   
   watch: {
-    '$route':'refreshData'
+    '$route':'refreshData',
     
   },
   methods: {
     refreshData: function () {
+      this.$forceUpdate();
       const token = JSON.parse(localStorage.getItem('user-token'));
-      const currentAdmin = this.admin;
+      const currentAdmin = this.adminUser;
       if(token){
           if(token && currentAdmin == 0){
             this.publier = true,
