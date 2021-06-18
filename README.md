@@ -14,7 +14,8 @@ Ouvrir le fichier exemple.env dans le backend en remplaçant les valeurs par dé
 
 BASE DE DONNEES ****************
 
-La BDD se trouve dans le dossier DATABASE
+La BDD se trouve dans le dossier DATABASE/groupomania
+Importer/restaurer les fichiers dans votre dossier MySQL via MySQLworkbench, la console SQL ou votre interface SQL habituelle !
 
 
 BACKEND ******************

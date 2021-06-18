@@ -112,7 +112,8 @@ export default {
 
           //***************************************** */
 
-          this.$router.push("/Forum");
+          //this.$router.push("/Forum");
+          this.$router.go()
           
         })
         .catch((error) => {

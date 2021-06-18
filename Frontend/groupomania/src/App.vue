@@ -118,7 +118,6 @@ export default {
   },
   methods: {
     refreshData: function () {
-      this.$forceUpdate();
       const token = JSON.parse(localStorage.getItem('user-token'));
       const currentAdmin = this.adminUser;
       if(token){
